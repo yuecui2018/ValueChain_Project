@@ -6,6 +6,7 @@ output: pdf_document
 ###Q2
 ```{r,message=FALSE}
 library(readxl)
+library(datasets)
 df<-read_excel("/Users/yuecui/Desktop/Predictive II/Week1/HW1_data.xls")
 ```
 
