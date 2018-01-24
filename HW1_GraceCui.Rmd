@@ -1,0 +1,259 @@
+---
+title: "HW1_Grace"
+output: pdf_document
+---
+
+###Q2
+```{r,message=FALSE}
+library(readxl)
+df<-read_excel("/Users/yuecui/Desktop/Predictive II/Week1/HW1_data.xls")
+```
+
+#####(a)
+```{r}
+x<-df$x
+y<-df$y
+m1<-lm(I(y^-1)~I(x^-1))
+summary(m1)$coefficients
+gamma0<-1/0.03375868
+gamma0
+gamma1<-0.45401397/0.03375868
+gamma1
+```
+
+$\hat{\gamma_0}$ = 29.62201 $\hat{\gamma_1}$ = 13.44881
+
+#####(b)
+```{r}
+
+fn <- function(p) {yhat<-p[1]*x/(p[2]+x); sum((y-yhat)^2)} 
+out<-nlm(fn,p=c(29.62201,13.44881),hessian=TRUE)
+theta<-out$estimate  #parameter estimates
+theta
+
+```
+
+```{r}
+fn2 <- function(x,p) p[1]*x/(p[2]+x)
+
+out2<-nls(y~fn2(x,p),start=list(p=c(29.62201,13.44881)),trace=TRUE)
+summary(out2)$coefficients
+
+```
+
+Using nlm function, the estimates are $\hat{\gamma_0}$ = 28.13688, $\hat{\gamma_1}$ = 12.57428
+Using nls function, the estimates are $\hat{\gamma_0}$ = 28.13705, $\hat{\gamma_1}$ = 12.57445
+
+###Q3
+
+#####(a)
+
+```{r}
+MSE<-out$minimum/(length(y) - length(theta))  #estimate of the error variance
+InfoMat<-out$hessian/2/MSE  #observed information matrix
+InfoMat
+CovTheta<-solve(InfoMat)
+SE<-sqrt(diag(CovTheta))  #standard errors of parameter estimates
+MSE
+CovTheta
+SE
+```
+
+The standard errors for $\hat{\gamma_0}$ is 0.7418084 and the standard errors for $\hat{\gamma_1}$ is 0.7795476.
+
+#####(b)
+```{r}
+cov2<-vcov(out2)
+cov2
+SE<-sqrt(diag(cov2))
+SE
+```
+
+The standard errors for $\hat{\gamma_0}$ is 0.7279790 and the standard errors for $\hat{\gamma_1}$ is 0.7630534. They are both slightly smaller than we got from nlm function.
+
+#####(c)
+```{r}
+theta0_u<-theta[1]+1.96*0.7418084
+theta0_l<-theta[1]-1.96*0.7418084
+theta0_l
+theta0_u
+```
+
+The 95% confidence interval for $\gamma_0$ is [26.68294,29.59083].
+
+```{r}
+theta1_u<-theta[2]+1.96*0.7795476
+theta1_l<-theta[2]-1.96*0.7795476
+theta1_l
+theta1_u
+```
+
+The 95% confidence interval for $\gamma_1$ is [11.04637,14.1022].
+
+
+```{r}
+confint.default(out2)
+```
+
+The 95% confidence interval for $\gamma_0$ using the default function is [26.71024,29.56386].
+The 95% confidence interval for $\gamma_1$ using the default function is [11.07890,14.07001].
+The confidence intervals using the confint.default function are slightly narrower than the ones we calculated manually.
+
+###Q4
+```{r,message=FALSE}
+library(boot)
+```
+
+#####(a)
+
+```{r}
+set.seed(1)
+fit<-function(Z,i,theta0) {
+   Zboot<-Z[i,]
+   x<-Zboot[[2]]
+
+   y<-Zboot[[1]]
+   fn <- function(p) {yhat<-p[1]*x/(p[2]+x); sum((y-yhat)^2)} 
+   out<-nlm(fn,p=theta0)
+   theta<-out$estimate}  #parameter estimates
+dfboot<-boot(df, fit, R=20000, theta0=c(29.62201,13.44881))
+CovTheta<-cov(dfboot$t)
+SE<-sqrt(diag(CovTheta))
+SE
+plot(dfboot,index=1)  #index=i calculates results for ith parameter
+plot(dfboot,index=2)  #index=i calculates results for ith parameter
+
+```
+
+The standard errors are 0.7125793 and 0.7398134.
+
+#####(b)
+```{r}
+boot.ci(dfboot,conf=c(.95),index=1,type=c("norm"))
+boot.ci(dfboot,conf=c(.95),index=2,type=c("norm"))
+```
+
+The 95% confidence interval for $\gamma_0$ using the normal approximation is [26.83, 29.63].
+The 95% confidence interval for $\gamma_1$ using the normal approximation is [11.19, 14.09].
+
+#####(c)
+```{r}
+boot.ci(dfboot,conf=c(.95),index=1,type=c("basic"))
+boot.ci(dfboot,conf=c(.95),index=2,type=c("basic"))
+```
+
+The reflected 95% confidence interval for $\gamma_0$ is [27.00, 29.84].
+The reflected 95% confidence interval for $\gamma_1$ is [11.16, 14.10].
+
+#####(d)
+
+The confidence interval for $\gamma_0$ in part(c) does not agree with its CI in part(b). 
+The confidence interval for $\gamma_1$ in part(c) does not agree with its CI in part(b). 
+This is expected since as the bootstrapped histograms in part(1) have shown, the distribution for $\gamma_0$ is not normal, but the distribution for $\gamma_1$ is pretty normal. 
+
+###Q5
+```{r}
+set.seed(1)
+MLCfit<-function(Z,i,theta0,x_pred) {
+   Zboot<-Z[i,]
+   x<-Zboot[[2]]
+   y<-Zboot[[1]]
+
+   fn <- function(p) {yhat<-p[1]*x/(p[2]+x); sum((y-yhat)^2)} 
+   out<-nlm(fn,p=theta0)
+   theta<-out$estimate 
+   y_pred<- theta[1]*x_pred / (theta[2] + x_pred) #predicted response
+     } #predicted response
+
+MLCboot<-boot(df, MLCfit, R=20000, theta0=c(29.62201,13.44881), x_pred=27)
+MLCboot
+
+VarYhat<-var(MLCboot$t); VarYhat
+SEYhat<-sqrt(VarYhat); SEYhat
+  
+
+
+Yhat0<-MLCboot$t0
+Yhatboot<-MLCboot$t
+g.hat <- mean(MLCboot$t)
+SEY<-sqrt(var(Yhatboot)+MSE); SEY
+c(g.hat-qnorm(.975)*SEY, g.hat+qnorm(.975)*SEY) #simpler PI
+
+boot.ci(MLCboot,conf=c(0.95),type=c("norm","basic"))
+
+```
+
+The prediction interval is [18.06875, 20.25920].
+The normal confidence interval is [18.82, 19.64] and the reflected confidence interval is [18.91, 19.72].
+I think the prediction interval better represents an interval that I would expect to contain the future response with roughly 95% chance. This is because the prediction interval also accounts for the error term, which makes it slightly wider than the confidence interval. Therefore, it will be more accurate for the future prediction.
+
+###Q6
+```{r}
+AIC(out2)
+
+m3<-lm(y~sqrt(x))
+AIC(m3)
+```
+
+AIC for the model in part(2b) is 31.31967.
+AIC for the alternative model is 53.05066.
+AIC suggests that the nls model we fitted in 2(b) is better since its AIC is smaller.
+
+###Q7
+```{r}
+set.seed(1)
+CVInd <- function(n,K) {  #n is sample size; K is number of parts; returns K-length list of indices for each part
+   m<-floor(n/K)  #approximate size of each part
+   r<-n-m*K  
+   I<-sample(n,n)  #random reordering of the indices
+   Ind<-list()  #will be list of indices for all K parts
+   length(Ind)<-K
+   for (k in 1:K) {
+      if (k <= r) kpart <- ((m+1)*(k-1)+1):((m+1)*k)  
+         else kpart<-((m+1)*r+m*(k-r-1)+1):((m+1)*r+m*(k-r))
+      Ind[[k]] <- I[kpart]  #indices for kth part of data
+   }
+   Ind
+}
+
+Nrep<-20 #number of replicates of CV
+K<-nrow(df)  #K-fold CV on each replicate
+n.models = 2 #number of different models to fit and compare
+n=nrow(df)
+yhat=matrix(0,n,n.models)
+MSE<-matrix(0,Nrep,n.models)
+for (j in 1:Nrep) {
+  Ind<-CVInd(n,K)
+  for (k in 1:K) {
+     out<-nls(y~fn2(x,p),data=df[-Ind[[k]],],start=list(p=c(29.62201,13.44881)),trace=FALSE)
+     yhat[Ind[[k]],1]<- as.numeric(predict(out,df[Ind[[k]],]))#predicted response
+     out<-lm(y~sqrt(x), data=df[-Ind[[k]],])
+     yhat[Ind[[k]],2]<-as.numeric(predict(out,df[Ind[[k]],]))
+
+  } #end of k loop
+  MSE[j,]=apply(yhat,2,function(x) sum((y-x)^2))/n
+} #end of j loop
+MSE
+MSEAve<- apply(MSE,2,mean); MSEAve #averaged mean square CV error
+MSEsd <- apply(MSE,2,sd); MSEsd   #SD of mean square CV error
+r2<-1-MSEAve/var(y); r2  #CV r^2
+
+```
+
+The average MSE for the model that I fitted in part(2b) is 0.2943015 and its $r^2$ is 0.9924874.
+The average MSE for the alternative model is 1.1106552, and its $r^2$ is 0.9716484.
+The model that I fitted in part(2b) will be chosen since it has a lower average MSE and a higher $r^2$ for the n-fold validation.
+
+###Q8
+```{r}
+par(mfrow=c(2,2))
+plot(density(resid(out2)))
+plot(resid(out2))
+
+plot(density(resid(m3)))
+plot(resid(m3))
+```
+
+Based on the plots, we can see that the residuals for the model in part(2b) is randomly scattered and the distribution is quite normal.
+On the other side, the residuals for the alternative model is not normal and not randomly scattered. Therefore, we would choose the model in part(2b), which also agrees with the conclusion we draw above.
+
