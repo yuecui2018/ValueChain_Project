@@ -7,5 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/tracks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
+
 # Initialize the database
 db = SQLAlchemy(app)
+

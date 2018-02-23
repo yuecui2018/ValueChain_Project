@@ -3,33 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <link href="static/basic.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+   
+    <title>Soccer Goal Predicting App</title>
+
+    <style>
+    .center {
+    margin: auto;
+    font-family: 'Trebuchet MS';
+    font-size: 22px;
+    width: 60%;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.5);
+}
+    .title {
+    color:#6A4E07;
+    font-size: 35px;
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+    font-family: 'Palatino';
+    background-color: rgba(255,255,255,0.5);
+
+}
+</style>
+
 </head>
 
 <body>
-    <h3>
-         <a href = "{{ url_for('index') }}">Tracks I like</a>
-    </h3>
+  <header>
+    <h1><font face="verdana" color:white> Soccer Goal <br> Predicting App</font> <h1>
+  </header>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
 
-    <hr/>
-    <table>
-         <thead>
-            <tr>
-               <th>Title</th>
-               <th>Artist</th>
-               <th>Album</th>
-            </tr>
-         </thead>
+    <h3> <h3>
+    <form action="/" method="post">  
+      <body>
+        <div class = "title">
 
-         <tbody>
-            {% for track in tracks %}
-               <tr>
-                  <td>{{ track.title }}</td>
-                  <td>{{ track.artist }}</td>
-                  <td>{{ track.album }}</td>
-               </tr>
-            {% endfor %}
-         </tbody>
-      </table>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please enter the details of the attempted shot
+            <hr />
+
+        </div>
+
+          <div style = "color:#E0AA23" class = "center">
+          <p >What is your side?</p>
+          <input type="radio" name="side" value="home"> Home
+          <input type="radio" name="side" value="away"> Away
+          <br>
+          <p > What is the body part? </p>
+          <select name="body part">
+          <option value ="right foot">right foot</option>
+          <option value ="left foot">left foot</option>
+          <option value ="head">head</option>
+          </select> 
+          <br>
+          event type
+          <input type="text" name="event type">
+          <br>
+          shot place
+          <input type="text" name="shot place">
+          <br>
+          location
+          <input type="text" name="location">
+          <br>
+          assist method
+          <input type="text" name="assist method">
+          <br>
+          time
+          <input type="text" name="time">
+          <br>
+          fast break (yes or no)
+          <input type="text" name="fast break">
+          <br>
+
+        </div> 
+
+
+        <hr>
+
+        <div align="center">
+            <button class="btn" type="submit">Submit</button>
+        </div>
+
+    </div>
+
+
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+      </body>
+   
+            </form>   
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <script src="static/index.js"></script>
 
 </body>
 </html>

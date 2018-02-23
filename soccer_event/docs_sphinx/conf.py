@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# soccer_event documentation build configuration file, created by
-# sphinx-quickstart on Mon Jan 29 22:06:42 2018.
+# usedcar_webapp documentation build configuration file, created by
+# sphinx-quickstart on Mon Jan 29 22:11:41 2018.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -19,7 +19,7 @@
 #
 # import os
 # import sys
-# sys.path.insert(0, os.path.abspath('.'))
+ sys.path.insert(0, os.path.abspath('../docs.sphinx')) ###change the directory
 
 
 # -- General configuration ------------------------------------------------
@@ -103,23 +103,11 @@ html_theme = 'alabaster'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-# Custom sidebar templates, must be a dictionary that maps document names
-# to template names.
-#
-# This is required for the alabaster theme
-# refs: http://alabaster.readthedocs.io/en/latest/installation.html#sidebars
-html_sidebars = {
-    '**': [
-        'relations.html',  # needs 'show_related': True theme option to display
-        'searchbox.html',
-    ]
-}
-
 
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'soccer_eventdoc'
+htmlhelp_basename = 'soccer_event_webappdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -146,7 +134,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'soccer_event.tex', 'soccer\\_event Documentation',
+    (master_doc, 'soccer_event.tex', 'soccer_event\\_webapp Documentation',
      'Grace Cui', 'manual'),
 ]
 
@@ -156,7 +144,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'soccer_event', 'soccer_event Documentation',
+    (master_doc, 'soccer_event_webapp', 'soccer_event_webapp Documentation',
      [author], 1)
 ]
 
@@ -167,8 +155,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'soccer_event', 'soccer_event Documentation',
-     author, 'soccer_event', 'One line description of project.',
+    (master_doc, 'soccer_event_webapp', 'soccer_event_webapp Documentation',
+     author, 'soccer_event_webapp', 'One line description of project.',
      'Miscellaneous'),
 ]
 
