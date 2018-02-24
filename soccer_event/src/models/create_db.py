@@ -6,8 +6,8 @@ from train_model import Track
 # configuration parameter in __init__.py with the schema defined by models.Track()
 def create_db():
     db.create_all()
-    track1 = Track(artist='Britney Spears', album='Circus', title='Radar')
-    track2 = Track(artist='Emancipator', album='Dusk to Dawn', title='Minor Cause')
+    track1 = Track(time='20', side='Home', fast_break='yes')
+    track2 = Track(time='45', side='Home', fast_break='no')
     db.session.add(track1)
     db.session.add(track2)
     db.session.commit()

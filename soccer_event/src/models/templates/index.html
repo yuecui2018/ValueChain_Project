@@ -3,33 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <link href="static/basic.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+   
+    <title>Soccer Goal Predicting App</title>
+
+    <style>
+    .center {
+    margin: auto;
+    font-family: 'Trebuchet MS';
+    font-size: 22px;
+    width: 60%;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.5);
+}
+    .title {
+    color:#6A4E07;
+    font-size: 35px;
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+    font-family: 'Palatino';
+    background-color: rgba(255,255,255,0.5);
+
+}
+</style>
+
 </head>
 
 <body>
-    <h3>
-         <a href = "{{ url_for('index') }}">Tracks I like</a>
-    </h3>
+    <header>
+      <h1><font face="verdana" color:white> Soccer Goal <br> Predicting App</font> <h1>
+    </header>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
 
-    <hr/>
-    <table>
-         <thead>
-            <tr>
-               <th>Title</th>
-               <th>Artist</th>
-               <th>Album</th>
-            </tr>
-         </thead>
+    <h3> <h3>
+    <form action="/" method="post">  
+      <body>
+        <div class = "title">
 
-         <tbody>
-            {% for track in tracks %}
-               <tr>
-                  <td>{{ track.title }}</td>
-                  <td>{{ track.artist }}</td>
-                  <td>{{ track.album }}</td>
-               </tr>
-            {% endfor %}
-         </tbody>
-      </table>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Please enter the details of the attempted shot
+            <hr />
+
+        </div>
+
+          <div style = "color:#E0AA23" class = "center">
+          <p >What is your side?</p>
+          <input type="radio" name="side" value="home"> Home
+          <input type="radio" name="side" value="away"> Away
+      
+
+          <br>
+
+          <p > What is the event type? </p>
+          <select name="event_type">
+          <option value ="event_type_Corner">Corner</option>
+          <option value ="event_type_Attempt">Attempt</option>
+          <option value ="event_type_FreeKick">FreeKick</option>
+          <option value ="event_type_Foul">Foul</option>
+          <option value ="event_type_Card">Card</option>
+          <option value ="event_type_other">other</option>
+          </select> 
+          
+          <br>
+
+          <p >Does the shot have an assist?</p>
+          <input type="radio" name="assist_method" value="yes"> Yes
+          <input type="radio" name="assist_method" value="no"> No
+      
+          <br>
+          <p >Is it a fast break?</p>
+          <input type="radio" name="fastbreak" value="yes"> Yes
+          <input type="radio" name="fastbreak" value="no"> No
+
+          <br>
+          Time of the shot (in minutes):
+          <input type="text" name="time">
+          <br>
+
+        </div> 
+
+
+        <hr>
+      <div style = "color: black" align="center">
+      <p>
+      The predicted probability of this shot being a goal is: {{prob}}
+      </p>
+
+      <button id = "button" type="submit">Submit</button>
+    
+    </div>
+
+
+
+    </div>
+
+
+
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+      </body>
+   
+            </form>   
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+      <script src="static/index.js"></script>
+
 
 </body>
 </html>
