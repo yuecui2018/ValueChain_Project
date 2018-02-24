@@ -31,9 +31,9 @@
 </head>
 
 <body>
-  <header>
-    <h1><font face="verdana" color:white> Soccer Goal <br> Predicting App</font> <h1>
-  </header>
+    <header>
+      <h1><font face="verdana" color:white> Soccer Goal <br> Predicting App</font> <h1>
+    </header>
     </br>
     </br>
     </br>
@@ -69,43 +69,53 @@
           <p >What is your side?</p>
           <input type="radio" name="side" value="home"> Home
           <input type="radio" name="side" value="away"> Away
+      
+
           <br>
-          <p > What is the body part? </p>
-          <select name="body part">
-          <option value ="right foot">right foot</option>
-          <option value ="left foot">left foot</option>
-          <option value ="head">head</option>
+
+          <p > What is the event type? </p>
+          <select name="event_type">
+          <option value ="event_type_Corner">Corner</option>
+          <option value ="event_type_Attempt">Attempt</option>
+          <option value ="event_type_FreeKick">FreeKick</option>
+          <option value ="event_type_Foul">Foul</option>
+          <option value ="event_type_Card">Card</option>
+          <option value ="event_type_other">other</option>
           </select> 
+          
           <br>
-          event type
-          <input type="text" name="event type">
+
+          <p >Does the shot have an assist?</p>
+          <input type="radio" name="assist_method" value="yes"> Yes
+          <input type="radio" name="assist_method" value="no"> No
+      
           <br>
-          shot place
-          <input type="text" name="shot place">
+          <p >Is it a fast break?</p>
+          <input type="radio" name="fastbreak" value="yes"> Yes
+          <input type="radio" name="fastbreak" value="no"> No
+
           <br>
-          location
-          <input type="text" name="location">
-          <br>
-          assist method
-          <input type="text" name="assist method">
-          <br>
-          time
+          Time of the shot (in minutes):
           <input type="text" name="time">
-          <br>
-          fast break (yes or no)
-          <input type="text" name="fast break">
           <br>
 
         </div> 
 
 
         <hr>
+      <div style = "color: black" align="center">
+      <p>
+      The predicted probability of this shot being a goal is: {{prob}}
+      </p>
 
-        <div align="center">
-            <button class="btn" type="submit">Submit</button>
-        </div>
+      <button id = "button" type="submit">Submit</button>
+    
+    </div>
+
+
 
     </div>
+
 
 
     </br>
@@ -140,6 +150,7 @@
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
       <script src="static/index.js"></script>
+
 
 </body>
 </html>

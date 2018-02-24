@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for, flash
-from __init__ import app, db
+from __init__ import application, db
 from train_model import Track
 
 
-@app.route('/')
+@application.route('/')
 def index():
     """Main view that lists songs
     Create view into index page that uses data queried from Track database and
@@ -13,7 +13,7 @@ def index():
 
     return render_template('index.html', tracks=Track.query.all())
 
-@app.route('/add', methods=['POST'])
+@application.route('/add', methods=['POST'])
 def add_entry():
     """View that process a POST with new song input
     :return: redirect to index page
@@ -27,4 +27,4 @@ def add_entry():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    application.run(debug=True)
