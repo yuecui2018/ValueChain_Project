@@ -5,22 +5,29 @@ import pickle
 import os
 import pandas as pd
 import statsmodels.api as sm
+import logging
 
+logger = logging.getLogger('logger')
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler('soccer_event.log')
+fh.setLevel(logging.DEBUG)
+logger.addHandler(fh)
 
 
 app = Flask(__name__)
 
 @app.route('/', methods = ['GET'])
 def parser():
- return render_template('index.html')
+  """
+  Initialize the webpage
+  """
+  return render_template('index.html')
 @app.route('/', methods = ['POST'])
+
 def model():
-  #test = request.form['side']
-  #test = request.form['body part']
-  #if (test == 'left foot'):
-   # return '<h3> test succeed</h3>'
-  #else:
-   # return '<h3> invalid </h3>'
+  """
+  Render the webpage and fead values from inputs on the website and return the predicted result, which will be showned on the web page.
+  """
   time = int(request.form['time'])
   side_val = request.form['side']
   event_val = request.form['event_type']
@@ -63,10 +70,13 @@ def model():
 
   pred_list = [event_type_FreeKick,event_type_Corner,event_type_Attempt,time,assist_method_Pass,
   event_type_Foul,event_type_Card,side_2,event_type_other,fast_break_1]
-  #print(os.getcwd())
-  #return render_template("index.html", prob = 0.56)
+  
+  logger.info("Users' input are successfully captured. Inputs are: %s" % str(pred_list))
+  ###Predict result using the pickle file
   mymodel=pickle.load(open('result.p',"rb"))
   pred_prob= round(float(mymodel.predict(pred_list)),2)
+
+  logger.info("The probability is successfully predicted, which is: %s" % str(pred_prob))
   return render_template("index.html", prob = pred_prob)
 
 if __name__ == '__main__':

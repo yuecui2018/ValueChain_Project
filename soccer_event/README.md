@@ -43,18 +43,18 @@ Project Organization
     │   ├── __init__.py    <- Makes src a Python module
     │   │
     │   │     
-    │   ├── static         <- CSS and JavaScript files
-    │   │ 
-    │   ├── templates      <- HTML file
     │   │   
     │   ├── models         
-    │       ├── app.py     <- File required to run the app.
+    │       ├── app.py      <- File required to run the app.
+    │       ├── templates   <- HTML file.
+    │       ├── static      <- CSS and JavaScript files
+    │       ├── soccer_event.log  <- Log file
     │       └── __init__.py <- Makes src a Python module
     │   
     │
     ├── database           <- Files used to create database and store data
     │
-    ├── models             <- script to train model
+    ├── models             <- scripts to train model and unit tests for functions
     │
 
 
