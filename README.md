@@ -29,7 +29,6 @@ Project Organization
 
     ├── LICENSE
     │
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
     │
     ├── README.md          <- The top-level README for developers using this project.
     │
@@ -60,7 +59,7 @@ Project Organization
 
 Link to download the data
 ------------
-https://www.kaggle.com/mirosval/personal-cars-classifieds/data
+https://www.kaggle.com/secareanualin/football-events/data
 
 
 Link to Pivotal Tracker
