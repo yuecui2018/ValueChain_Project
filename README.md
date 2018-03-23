@@ -58,7 +58,7 @@ Project Organization
 
 Application Screenshot
 ------------
-![](/Users/yuecui/Desktop/screenshot1.png)
+![](/Users/yuecui/Documents/GitHub/ValueChain_Project/pics/screenshot1.png)
 ![](/Users/yuecui/Desktop/screenshot2.png)
 
 Link to download the data
