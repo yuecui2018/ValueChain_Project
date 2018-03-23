@@ -58,8 +58,8 @@ Project Organization
 
 Application Screenshot
 ------------
-![](/ValueChain_Project/pics/screenshot1.png)
-![](/ValueChain_Project/pics/screenshot2.png)
+![](ValueChain_Project/pics/screenshot1.png)
+![](ValueChain_Project/pics/screenshot1.png)
 
 Link to download the data
 ------------
