@@ -56,6 +56,10 @@ Project Organization
     ├── models             <- scripts to train model and unit tests for functions
     │
 
+Application Screenshot
+------------
+![](/Users/yuecui/Desktop/screenshot1.png)
+![](/Users/yuecui/Desktop/screenshot2.png)
 
 Link to download the data
 ------------
