@@ -1,0 +1,13 @@
+click
+Sphinx
+coverage
+awscli
+flake8
+pandas
+statsmodels
+Pickle
+Bumpy
+sklearn
+seaborn
+
+python-dotenv>=0.5.1

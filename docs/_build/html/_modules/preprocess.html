@@ -1,0 +1,179 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>preprocess &#8212; soccer_event  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for preprocess</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">preprocessing</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">model_selection</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span> <span class="n">cross_val_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_selection</span> <span class="k">import</span> <span class="n">RFE</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="k">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils</span> <span class="k">import</span> <span class="n">resample</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+<div class="viewcode-block" id="preprocss"><a class="viewcode-back" href="../models.html#preprocess.preprocss">[docs]</a><span class="k">def</span> <span class="nf">preprocss</span><span class="p">():</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	This function includes:  </span>
+<span class="sd">	</span>
+<span class="sd">	1. Read data from directory.  </span>
+
+<span class="sd">	2. Reduce event_type into 6 levels.  </span>
+
+<span class="sd">	3. Convert assist_method into &quot;Yes&quot; and &quot;No&quot;.  </span>
+
+<span class="sd">	4. Upsample the data.</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+	<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;/Users/yuecui/Desktop/ValueChain/Project/events.csv&quot;</span><span class="p">)</span>
+
+
+	<span class="n">t</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;other&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="s2">&quot;FreeKick&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="s2">&quot;Foul&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="s2">&quot;Attempt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s2">&quot;Card&quot;</span><span class="p">:[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span><span class="s2">&quot;Corner&quot;</span><span class="p">:[</span><span class="mi">2</span><span class="p">]}</span>
+	<span class="n">t2</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">vv</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vv</span><span class="p">}</span>
+	<span class="n">data</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">event_type</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">t2</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+	<span class="n">m</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;None&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;Pass&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]}</span>
+	<span class="n">m2</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">vv</span> <span class="ow">in</span> <span class="n">m</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vv</span><span class="p">}</span>
+	<span class="n">data</span><span class="p">[</span><span class="s2">&quot;assist_method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">assist_method</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">,</span> <span class="n">categories</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+
+	<span class="n">cat_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">,</span><span class="s2">&quot;fast_break&quot;</span><span class="p">,</span><span class="s2">&quot;side&quot;</span><span class="p">,</span><span class="s2">&quot;assist_method&quot;</span><span class="p">]</span>
+	<span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">cat_vars</span><span class="p">:</span>
+	    <span class="n">cat_list</span><span class="o">=</span><span class="s1">&#39;var&#39;</span><span class="o">+</span><span class="s1">&#39;_&#39;</span><span class="o">+</span><span class="n">var</span>
+	    <span class="n">cat_list</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">var</span><span class="p">],</span> <span class="n">prefix</span><span class="o">=</span><span class="n">var</span><span class="p">)</span>
+	    <span class="n">data1</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cat_list</span><span class="p">)</span>
+	    <span class="n">data</span><span class="o">=</span><span class="n">data1</span>
+	<span class="n">cat_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;event_type&quot;</span><span class="p">,</span><span class="s2">&quot;fast_break&quot;</span><span class="p">,</span><span class="s2">&quot;side&quot;</span><span class="p">,</span><span class="s2">&quot;assist_method&quot;</span><span class="p">]</span>
+
+	<span class="n">data_vars</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+	<span class="n">to_keep</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">data_vars</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">cat_vars</span><span class="p">)))</span>
+
+
+	<span class="n">data_final</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="n">to_keep</span><span class="p">]</span>
+	<span class="n">data_final</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
+
+
+	<span class="n">data_final_vars</span><span class="o">=</span><span class="n">data_final</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+
+	<span class="c1"># Separate majority and minority classes</span>
+	<span class="n">df_majority</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">is_goal</span><span class="o">==</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">df_minority</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">is_goal</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span>
+
+	<span class="c1"># Upsample minority class</span>
+	<span class="n">df_minority_upsampled</span> <span class="o">=</span> <span class="n">resample</span><span class="p">(</span><span class="n">df_minority</span><span class="p">,</span> 
+	                                 <span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>     <span class="c1"># sample with replacement</span>
+	                                 <span class="n">n_samples</span><span class="o">=</span><span class="mi">916563</span><span class="p">,</span>    <span class="c1"># to match majority class</span>
+	                                 <span class="n">random_state</span><span class="o">=</span><span class="mi">123</span><span class="p">)</span> <span class="c1"># reproducible results</span>
+
+	<span class="c1"># Combine majority class with upsampled minority class</span>
+	<span class="n">df_upsampled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_majority</span><span class="p">,</span> <span class="n">df_minority_upsampled</span><span class="p">])</span>
+	 
+
+	<span class="c1">#####Model Fitting</span>
+
+	<span class="c1"># Separate input features (X) and target variable (y)</span>
+	<span class="n">y</span> <span class="o">=</span> <span class="n">df_upsampled</span><span class="o">.</span><span class="n">is_goal</span>
+	<span class="n">X</span> <span class="o">=</span> <span class="n">df_upsampled</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+
+	<span class="n">y</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;y.csv&quot;</span><span class="p">)</span>
+	<span class="n">X</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;X.csv&quot;</span><span class="p">)</span>
+	<span class="k">return</span></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Grace Cui.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
