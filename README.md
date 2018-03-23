@@ -58,8 +58,8 @@ Project Organization
 
 Application Screenshot
 ------------
-![](ValueChain_Project/pics/screenshot1.png)
-![](ValueChain_Project/pics/screenshot1.png)
+![](https://github.com/yuecui2018/ValueChain_Project/blob/finaltest/pics/screenshot1.png)
+![](https://github.com/yuecui2018/ValueChain_Project/blob/finaltest/pics/screenshot1.png)
 
 Link to download the data
 ------------
